@@ -32,11 +32,71 @@ $total = 0;
 
 <meta charset="UTF-8">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+rel="stylesheet"
+/>
 
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+rel="stylesheet"
+/>
 </head>
 
 <body>
+    <div class="container">
+<header class="d-flex align-items-center justify-content-between py-3 mb-4 border-bottom">
+
+<!-- Logo -->
+<div class="col-md-2">
+<a href="index.html" class="text-decoration-none">
+<span class="fs-4 fw-bold text-primary">CampusStore</span>
+</a>
+</div>
+
+<!-- Search -->
+<div class="col-md-5">
+<form class="d-flex">
+<input type="search" class="form-control me-2"
+placeholder="Search for books, gadgets, stationery...">
+<button class="btn btn-primary" type="submit">Search</button>
+</form>
+</div>
+
+<!-- Right Side -->
+<div class="col-md-3 text-end d-flex justify-content-end align-items-center gap-2 flex-nowrap">
+
+<a href="login.html" id="loginBtn" class="btn btn-outline-primary btn-sm">Login</a>
+
+<a href="signup.html" id="signupBtn" class="btn btn-primary btn-sm">Sign Up</a>
+
+<span id="userWelcome" class="fw-semibold ms-2"></span>
+
+<a href="order_history.php" id="ordersBtn"
+class="btn btn-outline-info" style="display:none">
+My Orders
+</a>
+
+<a href="backend/logout.php" id="logoutBtn"
+class="btn btn-outline-secondary" style="display:none">
+Logout
+</a>
+
+<a href="wishlist.html" class="btn btn-outline-danger position-relative">
+<i class="bi bi-heart"></i>
+</a>
+
+<a href="checkout.php" class="btn btn-outline-primary position-relative">
+<i class="bi bi-cart"></i>
+<span id="cartCount"
+class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+0
+</span>
+</a>
+
+</div>
+</header>
+</div>
 
 <div class="container mt-5">
 
@@ -154,7 +214,13 @@ Continue to Checkout
 <!-- RIGHT SIDE CART -->
 
 <div class="col-md-5">
+<div class="d-flex justify-content-end mb-3">
 
+<a href="index.html" class="btn btn-outline-secondary">
+← Back to Dashboard
+</a>
+
+</div>
 <div class="card p-3">
 
 <h5>Your Cart</h5>
@@ -203,6 +269,48 @@ document.getElementById("state").value = this.dataset.state
 document.getElementById("zip").value = this.dataset.zip
 
 })
+
+})
+
+</script>
+<script src="js/cart.js"></script>
+<script src="js/navbar.js"></script>
+<script>
+
+fetch("backend/get_cart.php")
+.then(res => res.json())
+.then(data => {
+
+let count = 0
+
+data.forEach(item => {
+count += parseInt(item.quantity)
+})
+
+document.getElementById("cartCount").innerText = count
+
+})
+
+</script>
+<script>
+
+fetch("backend/get_user.php")
+.then(res => res.json())
+.then(data => {
+
+if(data.logged_in){
+
+document.getElementById("loginBtn").style.display = "none"
+document.getElementById("signupBtn").style.display = "none"
+
+let name = data.name.split(" ")[0];
+document.getElementById("userWelcome").innerText =
+"Welcome, " + name
+
+document.getElementById("logoutBtn").style.display = "inline-block"
+document.getElementById("ordersBtn").style.display = "inline-block"
+
+}
 
 })
 
