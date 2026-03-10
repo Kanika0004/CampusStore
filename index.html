@@ -5,7 +5,10 @@
 .product-card {
 transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
+.dropdown:hover .dropdown-menu{
+display:block;
+margin-top:0;
+}
 .product-card:hover {
 transform: translateY(-6px);
 box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -55,8 +58,45 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         <!-- Right Section -->
         <div class="col-md-2 text-end d-flex justify-content-end align-items-center gap-2 flex-nowrap">
           <!-- Login -->
-          <a href="login.html" id="loginBtn" class="btn btn-outline-primary btn-sm"> Login </a>
+<div class="dropdown" id="loginBtn">
 
+<button class="btn btn-outline-primary btn-sm dropdown-toggle"
+type="button"
+data-bs-toggle="dropdown">
+
+Login
+
+</button>
+
+<ul class="dropdown-menu">
+
+<li>
+<a class="dropdown-item" href="login.html">
+<i class="bi bi-person"></i> Login
+</a>
+</li>
+
+<li>
+<a class="dropdown-item" href="signup.html">
+<i class="bi bi-person-plus"></i> Sign Up
+</a>
+</li>
+
+<li>
+<a class="dropdown-item" href="order_history.php">
+<i class="bi bi-box"></i> My Orders
+</a>
+</li>
+
+<li>
+<a class="dropdown-item" href="wishlist.html">
+<i class="bi bi-heart"></i> Wishlist
+</a>
+</li>
+
+</ul>
+
+</div>
           <!-- Sign Up -->
           <a href="signup.html" id="signupBtn" class="btn btn-primary btn-sm text-nowrap"> Sign Up </a>
           <span id="userWelcome" class="fw-semibold ms-2"></span>
