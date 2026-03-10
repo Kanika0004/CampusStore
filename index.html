@@ -2,19 +2,44 @@
 <html>
   <head>
     <style>
-.product-card {
-transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.dropdown:hover .dropdown-menu{
-display:block;
-margin-top:0;
-}
-.product-card:hover {
-transform: translateY(-6px);
-box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-</style>
-    <meta charset="UTF-8">
+      .product-card {
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+      }
+      .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+      .best-seller-wrapper {
+        overflow: hidden;
+        position: relative;
+      }
+
+      .best-seller-track {
+        display: flex;
+        gap: 20px;
+        animation: scrollProducts 40s linear infinite;
+      }
+
+      .best-seller-track:hover {
+        animation-play-state: paused;
+      }
+
+      @keyframes scrollProducts {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+    </style>
+    <meta charset="UTF-8" />
 
     <title>Bootstrap Setup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -45,9 +70,10 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 
         <!-- Search Bar -->
         <div class="col-md-5">
-          <form class="d-flex">
+          <form class="d-flex" id="searchForm">
             <input
               type="search"
+              id="searchInput"
               class="form-control me-2"
               placeholder="Search for books, gadgets, stationery..."
             />
@@ -56,57 +82,71 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         </div>
 
         <!-- Right Section -->
-        <div class="col-md-2 text-end d-flex justify-content-end align-items-center gap-2 flex-nowrap">
+        <div
+          class="col-md-2 text-end d-flex justify-content-end align-items-center gap-2 flex-nowrap"
+        >
           <!-- Login -->
-<div class="dropdown" id="loginBtn">
+          <div class="dropdown" id="loginBtn">
+            <button
+              class="btn btn-outline-primary btn-sm dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              Login
+            </button>
 
-<button class="btn btn-outline-primary btn-sm dropdown-toggle"
-type="button"
-data-bs-toggle="dropdown">
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="login.html">
+                  <i class="bi bi-person"></i> Login
+                </a>
+              </li>
 
-Login
+              <li>
+                <a class="dropdown-item" href="signup.html">
+                  <i class="bi bi-person-plus"></i> Sign Up
+                </a>
+              </li>
 
-</button>
+              <li>
+                <a class="dropdown-item" href="order_history.php">
+                  <i class="bi bi-box"></i> My Orders
+                </a>
+              </li>
 
-<ul class="dropdown-menu">
-
-<li>
-<a class="dropdown-item" href="login.html">
-<i class="bi bi-person"></i> Login
-</a>
-</li>
-
-<li>
-<a class="dropdown-item" href="signup.html">
-<i class="bi bi-person-plus"></i> Sign Up
-</a>
-</li>
-
-<li>
-<a class="dropdown-item" href="order_history.php">
-<i class="bi bi-box"></i> My Orders
-</a>
-</li>
-
-<li>
-<a class="dropdown-item" href="wishlist.html">
-<i class="bi bi-heart"></i> Wishlist
-</a>
-</li>
-
-</ul>
-
-</div>
+              <li>
+                <a class="dropdown-item" href="wishlist.html">
+                  <i class="bi bi-heart"></i> Wishlist
+                </a>
+              </li>
+            </ul>
+          </div>
           <!-- Sign Up -->
-          <a href="signup.html" id="signupBtn" class="btn btn-primary btn-sm text-nowrap"> Sign Up </a>
+          <a
+            href="signup.html"
+            id="signupBtn"
+            class="btn btn-primary btn-sm text-nowrap"
+          >
+            Sign Up
+          </a>
           <span id="userWelcome" class="fw-semibold ms-2"></span>
 
-          <a href="order_history.php" id="ordersBtn" class="btn btn-outline-info" style="display:none">
-          My Orders
+          <a
+            href="order_history.php"
+            id="ordersBtn"
+            class="btn btn-outline-info"
+            style="display: none"
+          >
+            My Orders
           </a>
 
-          <a href="backend/logout.php" id="logoutBtn" class="btn btn-outline-secondary" style="display:none">
-          Logout
+          <a
+            href="backend/logout.php"
+            id="logoutBtn"
+            class="btn btn-outline-secondary"
+            style="display: none"
+          >
+            Logout
           </a>
 
           <!-- Wishlist -->
@@ -118,13 +158,18 @@ Login
           </a>
 
           <!-- Cart -->
-          <a href="checkout.php" class="btn btn-outline-primary position-relative">
-          <i class="bi bi-cart"></i>
-          <span id="cartCount"
-          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-          0
-          </span>
-        </a>
+          <a
+            href="checkout.php"
+            class="btn btn-outline-primary position-relative"
+          >
+            <i class="bi bi-cart"></i>
+            <span
+              id="cartCount"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+            >
+              0
+            </span>
+          </a>
         </div>
       </header>
     </div>
@@ -164,252 +209,309 @@ Login
                 Shop by Category
               </a>
 
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu category-dropdown p-3">
                 <li>
-                  <a class="dropdown-item" href="#"> Action </a>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="All"
+                    data-subcategory="All"
+                    >All Products</a
+                  >
                 </li>
 
+                <li><hr class="dropdown-divider" /></li>
+                <li><h6 class="dropdown-header fw-bold">Electronics</h6></li>
                 <li>
-                  <a class="dropdown-item" href="#"> Another action </a>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Electronics"
+                    data-subcategory="Computer Accessories"
+                    >Computer Accessories</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Electronics"
+                    data-subcategory="Tablet Accessories"
+                    >Tablet Accessories</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Electronics"
+                    data-subcategory="Audio"
+                    >Audio</a
+                  >
                 </li>
 
+                <li><hr class="dropdown-divider" /></li>
+                <li><h6 class="dropdown-header fw-bold">Clothing</h6></li>
                 <li>
-                  <a class="dropdown-item" href="#"> Something else here </a>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Clothing"
+                    data-subcategory="Hoodies"
+                    >Hoodies</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Clothing"
+                    data-subcategory="T-Shirts"
+                    >T-Shirts</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Clothing"
+                    data-subcategory="Shoes"
+                    >Shoes</a
+                  >
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+                <li><h6 class="dropdown-header fw-bold">Accessories</h6></li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Accessories"
+                    data-subcategory="Bags"
+                    >Bags</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Accessories"
+                    data-subcategory="Watches"
+                    >Watches</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Accessories"
+                    data-subcategory="Water Bottles"
+                    >Water Bottles</a
+                  >
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+                <li><h6 class="dropdown-header fw-bold">Stationery</h6></li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Stationery"
+                    data-subcategory="Notebooks"
+                    >Notebooks</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Stationery"
+                    data-subcategory="Pens"
+                    >Pens</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Stationery"
+                    data-subcategory="Files"
+                    >Files</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Stationery"
+                    data-subcategory="Calculators"
+                    >Calculators</a
+                  >
                 </li>
               </ul>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="#"> Electronics </a>
+              <a
+                class="nav-link filter-link"
+                href="#"
+                data-category="Electronics"
+                data-subcategory="All"
+                >Electronics</a
+              >
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="#"> Accessories </a>
+              <a
+                class="nav-link filter-link"
+                href="#"
+                data-category="Accessories"
+                data-subcategory="All"
+                >Accessories</a
+              >
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="#"> Clothing </a>
+              <a
+                class="nav-link filter-link"
+                href="#"
+                data-category="Clothing"
+                data-subcategory="All"
+                >Clothing</a
+              >
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="#"> Stationery </a>
+              <a
+                class="nav-link filter-link"
+                href="#"
+                data-category="Stationery"
+                data-subcategory="All"
+                >Stationery</a
+              >
             </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <!-- Hero Container -->
-    <div class="container col-xxl-8 px-4 py-5">
-      <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-        <div class="col-10 col-sm-8 col-lg-6">
-          <img
-            src="./public/theme.png"
-            class="d-block mx-lg-auto img-fluid"
-            alt="Bootstrap Themes"
-            width="700"
-            height="500"
-            loading="lazy"
-          />
-        </div>
+    <div id="homeSections">
+      <!-- Hero Container -->
+      <div class="container col-xxl-8 px-4 py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+          <div class="col-10 col-sm-8 col-lg-6">
+            <img
+              src="./public/theme.png"
+              class="d-block mx-lg-auto img-fluid"
+              alt="Bootstrap Themes"
+              width="700"
+              height="500"
+              loading="lazy"
+            />
+          </div>
 
-        <div class="col-lg-6">
-          <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
-            Everything You Need for Campus Life
-          </h1>
+          <div class="col-lg-6">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+              Everything You Need for Campus Life
+            </h1>
 
-          <p class="lead">
-            Shop the latest electronics, trending fashion, and essential college
-            must-haves — curated for your everyday lifestyle.
-          </p>
+            <p class="lead">
+              Shop the latest electronics, trending fashion, and essential
+              college must-haves — curated for your everyday lifestyle.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- ================= BEST SELLERS SECTION ================= -->
-    <div class="container py-5">
-      <!-- Section Heading -->
-      <h2 class="fw-bold mb-4">Best Sellers</h2>
+      <!-- ================= BEST SELLERS SECTION ================= -->
+      <div class="container py-5">
+        <h2 class="fw-bold mb-4">🔥 Best Sellers</h2>
 
-      <!-- Products Grid -->
-      <div class="row g-4">
-        <!-- ===== Product 1 ===== -->
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="card h-100 shadow-sm product-card">
-            <!-- Fixed image area -->
-            <div class="ratio ratio-4x3 bg-light">
-              <img
-                src="./public/mouse.jpg"
-                class="w-100 h-100 object-fit-contain p-3"
-                alt="Wireless Mouse"
-              />
-            </div>
+        <div class="best-seller-wrapper">
+          <div class="best-seller-track" id="bestSellerItems"></div>
+        </div>
+      </div>
 
-            <!-- Card Body -->
-            <div class="card-body d-flex flex-column">
-              <!-- Title + Wishlist -->
-              <div class="d-flex justify-content-between">
-                <div>
-                  <h5 class="card-title mb-1">Wireless Mouse</h5>
-                  <p class="text-muted small mb-2">
-                    Smooth clicks • USB receiver • Silent
-                  </p>
+      <!-- Top Offers Section -->
+      <div class="container my-5">
+        <h2 class="mb-4 fw-bold">Top Offers</h2>
+
+        <div class="row g-4">
+          <!-- Deals of the Week -->
+          <div class="col-md-2">
+            <div class="card h-100 shadow-sm product-card">
+              <div class="card-body p-0">
+                <div class="bg-danger text-white p-4 rounded-top">
+                  <h5 class="card-title mb-0">Deals of the Week</h5>
                 </div>
 
-                <button class="btn btn-outline-danger btn-sm">♥</button>
-              </div>
-
-              <!-- Price -->
-              <div class="mb-3">
-                <span class="fw-bold fs-5">₹599</span>
-                <span class="text-muted small ms-2"><s>₹799</s></span>
-              </div>
-
-              <!-- Bottom Controls -->
-              <div class="mt-auto">
-                <div class="d-flex gap-2 align-items-center">
-                  <button class="btn btn-primary flex-grow-1">
-                    Add to Cart
-                  </button>
-
-                  <div class="btn-group">
-                    <button class="btn btn-outline-secondary btn-sm">−</button>
-                    <button class="btn btn-outline-secondary btn-sm">1</button>
-                    <button class="btn btn-outline-secondary btn-sm">+</button>
-                  </div>
+                <div class="p-3">
+                  <a
+                    href="#"
+                    class="card-link text-decoration-none fw-semibold"
+                  >
+                    View offers →
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- ===== Product 2 ===== -->
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="card h-100 shadow-sm product-card">
-            <div class="ratio ratio-4x3 bg-light">
-              <img
-                src="./public/notebooks.jpg"
-                class="w-100 h-100 object-fit-contain p-3"
-                alt="Notebook Set"
-              />
-            </div>
-
-            <div class="card-body d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <h5 class="card-title mb-1">Notebook Set</h5>
-                  <p class="text-muted small mb-2">
-                    Pack of 3 • 200 pages each
-                  </p>
+          <!-- Big Pack Bigger Discounts -->
+          <div class="col-md-2">
+            <div class="card h-100 shadow-sm product-card">
+              <div class="card-body p-0">
+                <div class="bg-danger text-white p-4 rounded-top">
+                  <h5 class="card-title mb-0">Big Pack Bigger Discounts</h5>
                 </div>
 
-                <button class="btn btn-outline-danger btn-sm">♥</button>
-              </div>
-
-              <div class="mb-3">
-                <span class="fw-bold fs-5">₹299</span>
-                <span class="text-muted small ms-2"><s>₹399</s></span>
-              </div>
-
-              <div class="mt-auto">
-                <div class="d-flex gap-2 align-items-center">
-                  <button class="btn btn-primary flex-grow-1">
-                    Add to Cart
-                  </button>
-
-                  <div class="btn-group">
-                    <button class="btn btn-outline-secondary btn-sm">−</button>
-                    <button class="btn btn-outline-secondary btn-sm">1</button>
-                    <button class="btn btn-outline-secondary btn-sm">+</button>
-                  </div>
+                <div class="p-3">
+                  <a
+                    href="#"
+                    class="card-link text-decoration-none fw-semibold"
+                  >
+                    View offers →
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- ===== Product 3 ===== -->
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="card h-100 shadow-sm product-card">
-            <div class="ratio ratio-4x3 bg-light">
-              <img
-                src="./public/earbuds.jpg"
-                class="w-100 h-100 object-fit-contain p-3"
-                alt="Bluetooth Earbuds"
-              />
-            </div>
-
-            <div class="card-body d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <h5 class="card-title mb-1">Bluetooth Earbuds</h5>
-                  <p class="text-muted small mb-2">
-                    Bass boost • 20h battery • Mic
-                  </p>
+          <!-- Combos -->
+          <div class="col-md-2">
+            <div class="card h-100 shadow-sm product-card">
+              <div class="card-body p-0">
+                <div class="bg-danger text-white p-4 rounded-top">
+                  <h5 class="card-title mb-0">Combos You Can't Miss</h5>
                 </div>
 
-                <button class="btn btn-outline-danger btn-sm">♥</button>
-              </div>
-
-              <div class="mb-3">
-                <span class="fw-bold fs-5">₹1,499</span>
-                <span class="text-muted small ms-2"><s>₹1,999</s></span>
-              </div>
-
-              <div class="mt-auto">
-                <div class="d-flex gap-2 align-items-center">
-                  <button class="btn btn-primary flex-grow-1">
-                    Add to Cart
-                  </button>
-
-                  <div class="btn-group">
-                    <button class="btn btn-outline-secondary btn-sm">−</button>
-                    <button class="btn btn-outline-secondary btn-sm">1</button>
-                    <button class="btn btn-outline-secondary btn-sm">+</button>
-                  </div>
+                <div class="p-3">
+                  <a
+                    href="#"
+                    class="card-link text-decoration-none fw-semibold"
+                  >
+                    View offers →
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- ===== Product 4 ===== -->
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="card h-100 shadow-sm product-card">
-            <div class="ratio ratio-4x3 bg-light">
-              <img
-                src="./public/hoodie.jpg"
-                class="w-100 h-100 object-fit-contain p-3"
-                alt="Campus Hoodie"
-              />
-            </div>
-
-            <div class="card-body d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <h5 class="card-title mb-1">Campus Hoodie</h5>
-                  <p class="text-muted small mb-2">Warm fleece • Unisex fit</p>
+          <!-- ₹99 Corner -->
+          <div class="col-md-2">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body p-0">
+                <div class="bg-danger text-white p-4 rounded-top">
+                  <h5 class="card-title mb-0">The ₹99 Corner</h5>
                 </div>
 
-                <button class="btn btn-outline-danger btn-sm">♥</button>
-              </div>
-
-              <div class="mb-3">
-                <span class="fw-bold fs-5">₹899</span>
-                <span class="text-muted small ms-2"><s>₹1,099</s></span>
-              </div>
-
-              <div class="mt-auto">
-                <div class="d-flex gap-2 align-items-center">
-                  <button class="btn btn-primary flex-grow-1">
-                    Add to Cart
-                  </button>
-
-                  <div class="btn-group">
-                    <button class="btn btn-outline-secondary btn-sm">−</button>
-                    <button class="btn btn-outline-secondary btn-sm">1</button>
-                    <button class="btn btn-outline-secondary btn-sm">+</button>
-                  </div>
+                <div class="p-3">
+                  <a
+                    href="#"
+                    class="card-link text-decoration-none fw-semibold"
+                  >
+                    View offers →
+                  </a>
                 </div>
               </div>
             </div>
@@ -417,80 +519,17 @@ Login
         </div>
       </div>
     </div>
+    <div class="container py-5" id="productsPage" style="display: none">
+      <!-- Breadcrumb -->
+      <nav class="mb-2">
+        <span id="breadcrumb" class="text-muted"></span>
+      </nav>
 
-    <!-- Top Offers Section -->
-    <div class="container my-5">
-      <h2 class="mb-4 fw-bold">Top Offers</h2>
+      <!-- Category Title -->
+      <h2 class="fw-bold mb-4" id="categoryTitle"></h2>
 
-      <div class="row g-4">
-        <!-- Deals of the Week -->
-        <div class="col-md-2">
-          <div class="card h-100 shadow-sm product-card">
-            <div class="card-body p-0">
-              <div class="bg-danger text-white p-4 rounded-top">
-                <h5 class="card-title mb-0">Deals of the Week</h5>
-              </div>
-
-              <div class="p-3">
-                <a href="#" class="card-link text-decoration-none fw-semibold">
-                  View offers →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Big Pack Bigger Discounts -->
-        <div class="col-md-2">
-          <div class="card h-100 shadow-sm product-card">
-            <div class="card-body p-0">
-              <div class="bg-danger text-white p-4 rounded-top">
-                <h5 class="card-title mb-0">Big Pack Bigger Discounts</h5>
-              </div>
-
-              <div class="p-3">
-                <a href="#" class="card-link text-decoration-none fw-semibold">
-                  View offers →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Combos -->
-        <div class="col-md-2">
-          <div class="card h-100 shadow-sm product-card">
-            <div class="card-body p-0">
-              <div class="bg-danger text-white p-4 rounded-top">
-                <h5 class="card-title mb-0">Combos You Can't Miss</h5>
-              </div>
-
-              <div class="p-3">
-                <a href="#" class="card-link text-decoration-none fw-semibold">
-                  View offers →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ₹99 Corner -->
-        <div class="col-md-2">
-          <div class="card h-100 shadow-sm  ">
-            <div class="card-body p-0">
-              <div class="bg-danger text-white p-4 rounded-top">
-                <h5 class="card-title mb-0">The ₹99 Corner</h5>
-              </div>
-
-              <div class="p-3">
-                <a href="#" class="card-link text-decoration-none fw-semibold">
-                  View offers →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Products -->
+      <div class="row g-4" id="productsContainer"></div>
     </div>
 
     <!-- ================= FOOTER ================= -->
@@ -552,7 +591,9 @@ Login
               <a href="login.html" class="nav-link p-0 text-muted">Sign Up</a>
             </li>
             <li class="nav-item mb-2">
-              <a href="order_history.php" class="nav-link p-0 text-muted">Orders</a>
+              <a href="order_history.php" class="nav-link p-0 text-muted"
+                >Orders</a
+              >
             </li>
           </ul>
         </div>
@@ -594,98 +635,247 @@ Login
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/cart.js"></script>
 
-<script>
-  // Attach backend call to existing "Add to Cart" buttons
-  document.addEventListener("DOMContentLoaded", function () {
-    updateCartCount()
-    const buttons = document.querySelectorAll(".btn.btn-primary.flex-grow-1");
+    <script>
+      let selectedCategory = "All";
+      let selectedSubcategory = "All";
 
-    buttons.forEach((btn, index) => {
-      btn.addEventListener("click", function () {
-        const productId = index + 1; // 1..4 based on order
+      function updateCartCount() {
+        fetch("backend/get_cart.php")
+          .then((res) => res.json())
+          .then((data) => {
+            let count = 0;
+            data.forEach((item) => {
+              count += item.quantity;
+            });
+            document.getElementById("cartCount").innerText = Number(count);
+          });
+      }
 
-        fetch("backend/add_to_cart.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            product_id: productId,
-            quantity: 1
+      function attachCartEvents() {
+        const buttons = document.querySelectorAll(".add-to-cart-btn");
+
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const productId = this.dataset.id;
+
+            fetch("backend/add_to_cart.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                product_id: productId,
+                quantity: 1,
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.status === "success") {
+                  updateCartCount();
+                  let toast = new bootstrap.Toast(
+                    document.getElementById("cartToast"),
+                  );
+                  toast.show();
+                } else {
+                  alert("Error adding to cart");
+                }
+              })
+              .catch((err) => console.error(err));
+          });
+        });
+      }
+
+      function loadProducts(
+        search = "",
+        category = "All",
+        subcategory = "All",
+      ) {
+        fetch(
+          `backend/get_products.php?search=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}`,
+        )
+          .then((res) => res.json())
+          .then((products) => {
+            const container = document.getElementById("productsContainer");
+            container.innerHTML = "";
+
+            if (products.length === 0) {
+              container.innerHTML = `
+            <div class="col-12">
+              <p class="text-muted">No products found.</p>
+            </div>
+          `;
+              return;
+            }
+
+            products.forEach((product) => {
+              container.innerHTML += `
+            <div class="col-12 col-sm-6 col-lg-3">
+              <div class="card h-100 shadow-sm product-card">
+                <div class="ratio ratio-4x3 bg-light">
+                  <img
+                    src="./public/${product.image}"
+                    class="w-100 h-100 object-fit-contain p-3"
+                    alt="${product.name}"
+                  />
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <h5 class="card-title mb-1">${product.name}</h5>
+                      <p class="text-muted small mb-1">${product.category}</p>
+                      <p class="text-muted small mb-2">${product.subcategory}</p>
+                    </div>
+                    <button class="btn btn-outline-danger btn-sm">♥</button>
+                  </div>
+
+                  <div class="mb-3">
+                    <span class="fw-bold fs-5">₹${product.price}</span>
+                  </div>
+
+                  <div class="mt-auto">
+                    <button class="btn btn-primary w-100 add-to-cart-btn" data-id="${product.id}">
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+            });
+
+            attachCartEvents();
           })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "success") {
-            updateCartCount()
-            let toast = new bootstrap.Toast(document.getElementById('cartToast'))
-            toast.show()
-          } else {
-            alert("Error adding to cart");
-          }
-        })
-        .catch(err => console.error(err));
+          .catch((err) => console.error(err));
+      }
+
+      function loadBestSellers() {
+        fetch("backend/get_best_sellers.php")
+          .then((res) => res.json())
+          .then((products) => {
+            const container = document.getElementById("bestSellerItems");
+            container.innerHTML = "";
+
+            let html = "";
+
+            products.forEach((product) => {
+              html += `
+        <div class="card product-card shadow-sm" style="min-width:220px">
+
+          <div class="ratio ratio-4x3 bg-light">
+            <img src="./public/${product.image}" 
+                 class="w-100 h-100 object-fit-contain p-3">
+          </div>
+
+          <div class="card-body text-center">
+            <h6>${product.name}</h6>
+            <p class="text-success fw-bold">₹${product.price}</p>
+          </div>
+
+        </div>
+        `;
+            });
+
+            // duplicate products for seamless infinite scroll
+            container.innerHTML = html + html;
+          });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCartCount();
+        loadProducts();
+        loadBestSellers();
+
+        document
+          .getElementById("searchForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const searchValue = document.getElementById("searchInput").value;
+            loadProducts(searchValue, selectedCategory, selectedSubcategory);
+          });
+
+        document.querySelectorAll(".filter-link").forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            selectedCategory = this.dataset.category || "All";
+            selectedSubcategory = this.dataset.subcategory || "All";
+
+            const searchValue = document.getElementById("searchInput").value;
+
+            // If All Products → show homepage again
+            if (selectedCategory === "All") {
+              document.getElementById("homeSections").style.display = "block";
+              document.getElementById("productsPage").style.display = "none";
+
+              loadProducts(searchValue, "All", "All");
+
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              return;
+            }
+
+            // Hide homepage
+            document.getElementById("homeSections").style.display = "none";
+
+            // Show products page
+            document.getElementById("productsPage").style.display = "block";
+
+            // Title logic
+            let title = selectedCategory;
+
+            if (selectedSubcategory !== "All") {
+              title = selectedCategory + " → " + selectedSubcategory;
+            }
+
+            document.getElementById("categoryTitle").innerText = title;
+
+            let breadcrumb = "Home > " + selectedCategory;
+
+            if (selectedSubcategory !== "All") {
+              breadcrumb += " > " + selectedSubcategory;
+            }
+
+            document.getElementById("breadcrumb").innerText = breadcrumb;
+
+            loadProducts(searchValue, selectedCategory, selectedSubcategory);
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        });
       });
-    });
-  });
- function updateCartCount(){
+    </script>
+    <script>
+      fetch("backend/get_user.php")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.logged_in) {
+            document.getElementById("loginBtn").style.display = "none";
+            document.getElementById("signupBtn").style.display = "none";
+            let name = data.name.split(" ")[0];
+            document.getElementById("userWelcome").innerText =
+              "Welcome, " + name;
 
-fetch("backend/get_cart.php")
-.then(res => res.json())
-.then(data => {
+            document.getElementById("logoutBtn").style.display = "inline-block";
 
-let count = 0
+            document.getElementById("ordersBtn").style.display = "inline-block";
+          }
+        });
+    </script>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div
+        id="cartToast"
+        class="toast align-items-center text-bg-success border-0"
+      >
+        <div class="d-flex">
+          <div class="toast-body">Product added to cart!</div>
 
-data.forEach(item => {
-count += item.quantity
-})
-
-document.getElementById("cartCount").innerText = Number(count)
-
-})
-
-}
-</script>
-<script>
-
-fetch("backend/get_user.php")
-.then(res => res.json())
-.then(data => {
-
-if(data.logged_in){
-
-document.getElementById("loginBtn").style.display = "none"
-document.getElementById("signupBtn").style.display = "none"
-let name = data.name.split(" ")[0];
-document.getElementById("userWelcome").innerText =
-"Welcome, " + name
-
-document.getElementById("logoutBtn").style.display = "inline-block"
-
-document.getElementById("ordersBtn").style.display = "inline-block"
-
-}
-
-})
-
-
-</script>
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-
-<div id="cartToast" class="toast align-items-center text-bg-success border-0">
-
-<div class="d-flex">
-<div class="toast-body">
-Product added to cart!
-</div>
-
-<button type="button" class="btn-close btn-close-white me-2 m-auto"
-data-bs-dismiss="toast"></button>
-
-</div>
-
-</div>
-
-</div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
