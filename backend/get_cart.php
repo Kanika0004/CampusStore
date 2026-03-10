@@ -2,9 +2,16 @@
 
 header("Content-Type: application/json");
 
+session_start();
+
 $conn = new mysqli("localhost","root","","campusstore");
 
-$user_id = 1;
+if(!isset($_SESSION['user_id'])){
+    echo json_encode([]);
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
 
 $sql = "SELECT products.name, products.price, cart.quantity
 FROM cart

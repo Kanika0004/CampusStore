@@ -506,13 +506,13 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.15);
           <h6 class="fw-bold">Account</h6>
           <ul class="nav flex-column">
             <li class="nav-item mb-2">
-              <a href="#" class="nav-link p-0 text-muted">Login</a>
+              <a href="login.html" class="nav-link p-0 text-muted">Login</a>
             </li>
             <li class="nav-item mb-2">
-              <a href="#" class="nav-link p-0 text-muted">Sign Up</a>
+              <a href="login.html" class="nav-link p-0 text-muted">Sign Up</a>
             </li>
             <li class="nav-item mb-2">
-              <a href="#" class="nav-link p-0 text-muted">Orders</a>
+              <a href="order_history.php" class="nav-link p-0 text-muted">Orders</a>
             </li>
           </ul>
         </div>
@@ -557,6 +557,7 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 <script>
   // Attach backend call to existing "Add to Cart" buttons
   document.addEventListener("DOMContentLoaded", function () {
+    updateCartCount()
     const buttons = document.querySelectorAll(".btn.btn-primary.flex-grow-1");
 
     buttons.forEach((btn, index) => {
@@ -576,6 +577,7 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         .then(res => res.json())
         .then(data => {
           if (data.status === "success") {
+            updateCartCount()
             let toast = new bootstrap.Toast(document.getElementById('cartToast'))
             toast.show()
           } else {
@@ -586,7 +588,9 @@ box-shadow: 0 8px 20px rgba(0,0,0,0.15);
       });
     });
   });
-  fetch("backend/get_cart.php")
+ function updateCartCount(){
+
+fetch("backend/get_cart.php")
 .then(res => res.json())
 .then(data => {
 
@@ -596,9 +600,11 @@ data.forEach(item => {
 count += item.quantity
 })
 
-document.getElementById("cartCount").innerText = count
+document.getElementById("cartCount").innerText = Number(count)
 
 })
+
+}
 </script>
 <script>
 
