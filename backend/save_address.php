@@ -26,9 +26,9 @@ $result = $conn->query($check);
 if($result->num_rows == 0){
 
 $sql = "INSERT INTO addresses
-(user_id,first_name,last_name,email,address,landmark,country,state,zip,payment)
+(user_id,first_name,last_name,email,address,landmark,country,state,zip)
 VALUES
-('$user_id','$first_name','$last_name','$email','$address','$landmark','$country','$state','$zip','$payment')";
+('$user_id','$first','$last','$email','$address','$landmark','$country','$state','$zip','$payment')";
 
 $conn->query($sql);
 

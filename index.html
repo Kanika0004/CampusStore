@@ -38,6 +38,62 @@
           transform: translateX(-50%);
         }
       }
+      .qty-box {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .qty-value {
+        min-width: 28px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .best-seller-track .product-card {
+        min-width: 260px;
+        max-width: 260px;
+        flex: 0 0 auto;
+      }
+      .header-actions {
+        min-width: 260px;
+      }
+
+      @media (max-width: 768px) {
+        .header-actions {
+          margin-top: 12px;
+          width: 100%;
+          justify-content: flex-end;
+          flex-wrap: wrap;
+          gap: 8px !important;
+        }
+      }
+      .wishlist-btn {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      }
+
+      .wishlist-btn i {
+        font-size: 14px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .wishlist-btn.active i {
+        color: #dc3545;
+      }
     </style>
     <meta charset="UTF-8" />
 
@@ -83,45 +139,16 @@
 
         <!-- Right Section -->
         <div
-          class="col-md-2 text-end d-flex justify-content-end align-items-center gap-2 flex-nowrap"
+          class="col-md-3 text-end d-flex justify-content-end align-items-center gap-2 flex-nowrap header-actions"
         >
-          <!-- Login -->
-          <div class="dropdown" id="loginBtn">
-            <button
-              class="btn btn-outline-primary btn-sm dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-            >
-              Login
-            </button>
+          <a
+            href="login.html"
+            id="loginBtn"
+            class="btn btn-outline-primary btn-sm"
+          >
+            Login
+          </a>
 
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="login.html">
-                  <i class="bi bi-person"></i> Login
-                </a>
-              </li>
-
-              <li>
-                <a class="dropdown-item" href="signup.html">
-                  <i class="bi bi-person-plus"></i> Sign Up
-                </a>
-              </li>
-
-              <li>
-                <a class="dropdown-item" href="order_history.php">
-                  <i class="bi bi-box"></i> My Orders
-                </a>
-              </li>
-
-              <li>
-                <a class="dropdown-item" href="wishlist.html">
-                  <i class="bi bi-heart"></i> Wishlist
-                </a>
-              </li>
-            </ul>
-          </div>
-          <!-- Sign Up -->
           <a
             href="signup.html"
             id="signupBtn"
@@ -129,27 +156,44 @@
           >
             Sign Up
           </a>
-          <span id="userWelcome" class="fw-semibold ms-2"></span>
 
-          <a
-            href="order_history.php"
-            id="ordersBtn"
-            class="btn btn-outline-info"
-            style="display: none"
-          >
-            My Orders
-          </a>
+          <div id="userMenuWrap" class="dropdown" style="display: none">
+            <button
+              class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="width: 38px; height: 38px"
+            >
+              <i class="bi bi-person-fill"></i>
+            </button>
 
-          <a
-            href="backend/logout.php"
-            id="logoutBtn"
-            class="btn btn-outline-secondary"
-            style="display: none"
-          >
-            Logout
-          </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <span
+                  class="dropdown-item-text fw-semibold"
+                  id="userWelcome"
+                ></span>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="order_history.php">
+                  <i class="bi bi-box me-2"></i>My Orders
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="wishlist.html">
+                  <i class="bi bi-heart me-2"></i>Wishlist
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="backend/logout.php">
+                  <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </div>
 
-          <!-- Wishlist -->
           <a
             href="wishlist.html"
             class="btn btn-outline-danger position-relative"
@@ -157,7 +201,6 @@
             <i class="bi bi-heart"></i>
           </a>
 
-          <!-- Cart -->
           <a
             href="checkout.php"
             class="btn btn-outline-primary position-relative"
@@ -638,51 +681,227 @@
     <script>
       let selectedCategory = "All";
       let selectedSubcategory = "All";
+      let wishlistIds = [];
 
       function updateCartCount() {
         fetch("backend/get_cart.php")
           .then((res) => res.json())
           .then((data) => {
             let count = 0;
-            data.forEach((item) => {
-              count += item.quantity;
-            });
-            document.getElementById("cartCount").innerText = Number(count);
+
+            if (Array.isArray(data) && data.length > 0) {
+              data.forEach((item) => {
+                count += parseInt(item.quantity) || 0;
+              });
+
+              // Sync local storage with DB cart
+              localStorage.setItem("cartCount", count);
+            } else {
+              // fallback when user not logged in
+              count = parseInt(localStorage.getItem("cartCount")) || 0;
+            }
+
+            const badge = document.getElementById("cartCount");
+            if (badge) {
+              badge.innerText = count;
+            }
+          })
+          .catch(() => {
+            const badge = document.getElementById("cartCount");
+            if (badge) {
+              badge.innerText =
+                parseInt(localStorage.getItem("cartCount")) || 0;
+            }
           });
       }
 
       function attachCartEvents() {
-        const buttons = document.querySelectorAll(".add-to-cart-btn");
+        document.querySelectorAll(".qty-minus").forEach((btn) => {
+          btn.onclick = function () {
+            const card = this.closest(".product-card");
+            const qtyEl = card.querySelector(".qty-value");
 
-        buttons.forEach((btn) => {
-          btn.addEventListener("click", function () {
+            let qty = parseInt(qtyEl.innerText);
+
+            if (qty > 1) {
+              qty--;
+              qtyEl.innerText = qty;
+            }
+          };
+        });
+
+        document.querySelectorAll(".qty-plus").forEach((btn) => {
+          btn.onclick = function () {
+            const card = this.closest(".product-card");
+            const qtyEl = card.querySelector(".qty-value");
+
+            let qty = parseInt(qtyEl.innerText);
+
+            qty++;
+            qtyEl.innerText = qty;
+          };
+        });
+
+        document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
+          btn.onclick = function () {
+            const card = this.closest(".product-card");
+
             const productId = this.dataset.id;
+
+            const qty = parseInt(card.querySelector(".qty-value").innerText);
 
             fetch("backend/add_to_cart.php", {
               method: "POST",
+
               headers: {
                 "Content-Type": "application/json",
               },
+
               body: JSON.stringify({
                 product_id: productId,
-                quantity: 1,
+                quantity: qty,
               }),
             })
               .then((res) => res.json())
               .then((data) => {
                 if (data.status === "success") {
                   updateCartCount();
-                  let toast = new bootstrap.Toast(
-                    document.getElementById("cartToast"),
-                  );
-                  toast.show();
                 } else {
-                  alert("Error adding to cart");
+                  // logged out fallback: update badge locally
+                  let current =
+                    parseInt(localStorage.getItem("cartCount")) || 0;
+                  localStorage.setItem("cartCount", current + qty);
+                  updateCartCount();
+                }
+
+                card.querySelector(".qty-value").innerText = 1;
+
+                let toast = new bootstrap.Toast(
+                  document.getElementById("cartToast"),
+                );
+                toast.show();
+              })
+              .catch(() => {
+                // network/login fallback
+                let current = parseInt(localStorage.getItem("cartCount")) || 0;
+                localStorage.setItem("cartCount", current + qty);
+                updateCartCount();
+
+                card.querySelector(".qty-value").innerText = 1;
+
+                let toast = new bootstrap.Toast(
+                  document.getElementById("cartToast"),
+                );
+                toast.show();
+              });
+          };
+        });
+
+        document.querySelectorAll(".wishlist-btn").forEach((btn) => {
+          btn.onclick = function () {
+            const productId = Number(this.dataset.id);
+            const icon = this.querySelector("i");
+
+            fetch("backend/add_to_wishlist.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                product_id: productId,
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.status === "added") {
+                  if (!wishlistIds.includes(productId)) {
+                    wishlistIds.push(productId);
+                  }
+                  this.classList.add("active");
+                  icon.classList.remove("bi-heart");
+                  icon.classList.add("bi-heart-fill");
+                }
+
+                if (data.status === "removed") {
+                  wishlistIds = wishlistIds.filter((id) => id !== productId);
+                  this.classList.remove("active");
+                  icon.classList.remove("bi-heart-fill");
+                  icon.classList.add("bi-heart");
+                }
+
+                if (data.status === "error") {
+                  alert("Please login first to use wishlist.");
                 }
               })
-              .catch((err) => console.error(err));
-          });
+              .catch((err) => console.error("Wishlist error:", err));
+          };
         });
+      }
+
+      function loadWishlistIds() {
+        return fetch("backend/get_wishlist_ids.php")
+          .then((res) => res.json())
+          .then((data) => {
+            wishlistIds = Array.isArray(data) ? data.map(Number) : [];
+          })
+          .catch((err) => {
+            console.error("Wishlist ids error:", err);
+            wishlistIds = [];
+          });
+      }
+
+      function renderProductCard(product, compact = false) {
+        const isWishlisted = wishlistIds.includes(Number(product.id));
+
+        return `
+    <div class="${compact ? "" : "col-12 col-sm-6 col-lg-3"}">
+      <div class="card h-100 shadow-sm product-card">
+        <div class="ratio ratio-4x3 bg-light">
+          <img
+            src="./public/${product.image}"
+            class="w-100 h-100 object-fit-contain p-3"
+            alt="${product.name}"
+          />
+        </div>
+
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="card-title mb-1">${product.name}</h5>
+              ${product.category ? `<p class="text-muted small mb-1">${product.category}</p>` : ""}
+              ${product.subcategory ? `<p class="text-muted small mb-2">${product.subcategory}</p>` : ""}
+            </div>
+
+            <button
+              type="button"
+              class="wishlist-btn ${isWishlisted ? "active" : ""}"
+              data-id="${product.id}"
+            >
+              <i class="bi ${isWishlisted ? "bi-heart-fill" : "bi-heart"}"></i>
+            </button>
+          </div>
+
+          <div class="mb-3">
+            <span class="fw-bold fs-5">₹${product.price}</span>
+          </div>
+
+          <div class="mt-auto">
+            <div class="d-flex gap-2 align-items-center">
+              <button class="btn btn-primary flex-grow-1 add-to-cart-btn" data-id="${product.id}">
+                Add to Cart
+              </button>
+
+              <div class="qty-box">
+                <button type="button" class="btn btn-outline-secondary btn-sm qty-minus">−</button>
+                <span class="qty-value">1</span>
+                <button type="button" class="btn btn-outline-secondary btn-sm qty-plus">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
       }
 
       function loadProducts(
@@ -690,155 +909,146 @@
         category = "All",
         subcategory = "All",
       ) {
-        fetch(
-          `backend/get_products.php?search=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}`,
-        )
-          .then((res) => res.json())
-          .then((products) => {
+        Promise.all([
+          fetch(
+            `backend/get_products.php?search=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}`,
+          ).then((res) => res.json()),
+          loadWishlistIds(),
+        ])
+          .then(([products]) => {
             const container = document.getElementById("productsContainer");
             container.innerHTML = "";
 
-            if (products.length === 0) {
+            if (!Array.isArray(products) || products.length === 0) {
               container.innerHTML = `
-            <div class="col-12">
-              <p class="text-muted">No products found.</p>
-            </div>
-          `;
+          <div class="col-12">
+            <p class="text-muted">No products found.</p>
+          </div>
+        `;
               return;
             }
 
             products.forEach((product) => {
-              container.innerHTML += `
-            <div class="col-12 col-sm-6 col-lg-3">
-              <div class="card h-100 shadow-sm product-card">
-                <div class="ratio ratio-4x3 bg-light">
-                  <img
-                    src="./public/${product.image}"
-                    class="w-100 h-100 object-fit-contain p-3"
-                    alt="${product.name}"
-                  />
-                </div>
-
-                <div class="card-body d-flex flex-column">
-                  <div class="d-flex justify-content-between">
-                    <div>
-                      <h5 class="card-title mb-1">${product.name}</h5>
-                      <p class="text-muted small mb-1">${product.category}</p>
-                      <p class="text-muted small mb-2">${product.subcategory}</p>
-                    </div>
-                    <button class="btn btn-outline-danger btn-sm">♥</button>
-                  </div>
-
-                  <div class="mb-3">
-                    <span class="fw-bold fs-5">₹${product.price}</span>
-                  </div>
-
-                  <div class="mt-auto">
-                    <button class="btn btn-primary w-100 add-to-cart-btn" data-id="${product.id}">
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
+              container.innerHTML += renderProductCard(product, false);
             });
 
             attachCartEvents();
           })
-          .catch((err) => console.error(err));
+          .catch((err) => console.error("Load products error:", err));
       }
 
       function loadBestSellers() {
-        fetch("backend/get_best_sellers.php")
-          .then((res) => res.json())
-          .then((products) => {
+        Promise.all([
+          fetch("backend/get_best_sellers.php").then((res) => res.json()),
+          loadWishlistIds(),
+        ])
+          .then(([products]) => {
             const container = document.getElementById("bestSellerItems");
             container.innerHTML = "";
 
             let html = "";
 
             products.forEach((product) => {
-              html += `
-        <div class="card product-card shadow-sm" style="min-width:220px">
-
-          <div class="ratio ratio-4x3 bg-light">
-            <img src="./public/${product.image}" 
-                 class="w-100 h-100 object-fit-contain p-3">
-          </div>
-
-          <div class="card-body text-center">
-            <h6>${product.name}</h6>
-            <p class="text-success fw-bold">₹${product.price}</p>
-          </div>
-
-        </div>
-        `;
+              html += renderProductCard(product, true);
             });
 
-            // duplicate products for seamless infinite scroll
             container.innerHTML = html + html;
-          });
+            attachCartEvents();
+          })
+          .catch((err) => console.error("Best sellers error:", err));
+      }
+
+      function showHomePage() {
+        document.getElementById("homeSections").style.display = "block";
+        document.getElementById("productsPage").style.display = "none";
+      }
+
+      function showProductsPage(title, breadcrumb) {
+        document.getElementById("homeSections").style.display = "none";
+        document.getElementById("productsPage").style.display = "block";
+        document.getElementById("categoryTitle").innerText = title;
+        document.getElementById("breadcrumb").innerText = breadcrumb;
       }
 
       document.addEventListener("DOMContentLoaded", function () {
         updateCartCount();
-        loadProducts();
-        loadBestSellers();
+
+        loadWishlistIds().then(() => {
+          loadBestSellers();
+          loadProducts();
+        });
 
         document
           .getElementById("searchForm")
           .addEventListener("submit", function (e) {
             e.preventDefault();
-            const searchValue = document.getElementById("searchInput").value;
-            loadProducts(searchValue, selectedCategory, selectedSubcategory);
+
+            const searchValue = document
+              .getElementById("searchInput")
+              .value.trim();
+
+            if (searchValue === "") {
+              if (selectedCategory === "All" && selectedSubcategory === "All") {
+                showHomePage();
+              } else {
+                let title = selectedCategory;
+                let breadcrumb = "Home > " + selectedCategory;
+
+                if (selectedSubcategory !== "All") {
+                  title += " → " + selectedSubcategory;
+                  breadcrumb += " > " + selectedSubcategory;
+                }
+
+                showProductsPage(title, breadcrumb);
+              }
+
+              loadProducts("", selectedCategory, selectedSubcategory);
+              return;
+            }
+
+            // reset category filters when searching
+            selectedCategory = "All";
+            selectedSubcategory = "All";
+
+            showProductsPage(
+              "Search Results",
+              `Home > Search > ${searchValue}`,
+            );
+
+            loadProducts(searchValue, "All", "All");
+            window.scrollTo({ top: 0, behavior: "smooth" });
           });
 
         document.querySelectorAll(".filter-link").forEach((link) => {
           link.addEventListener("click", function (e) {
             e.preventDefault();
 
+            document.getElementById("searchInput").value = "";
+
             selectedCategory = this.dataset.category || "All";
             selectedSubcategory = this.dataset.subcategory || "All";
 
-            const searchValue = document.getElementById("searchInput").value;
+            const searchValue = document
+              .getElementById("searchInput")
+              .value.trim();
 
-            // If All Products → show homepage again
             if (selectedCategory === "All") {
-              document.getElementById("homeSections").style.display = "block";
-              document.getElementById("productsPage").style.display = "none";
-
+              showHomePage();
               loadProducts(searchValue, "All", "All");
-
               window.scrollTo({ top: 0, behavior: "smooth" });
               return;
             }
 
-            // Hide homepage
-            document.getElementById("homeSections").style.display = "none";
-
-            // Show products page
-            document.getElementById("productsPage").style.display = "block";
-
-            // Title logic
             let title = selectedCategory;
-
-            if (selectedSubcategory !== "All") {
-              title = selectedCategory + " → " + selectedSubcategory;
-            }
-
-            document.getElementById("categoryTitle").innerText = title;
-
             let breadcrumb = "Home > " + selectedCategory;
 
             if (selectedSubcategory !== "All") {
+              title += " → " + selectedSubcategory;
               breadcrumb += " > " + selectedSubcategory;
             }
 
-            document.getElementById("breadcrumb").innerText = breadcrumb;
-
+            showProductsPage(title, breadcrumb);
             loadProducts(searchValue, selectedCategory, selectedSubcategory);
-
             window.scrollTo({ top: 0, behavior: "smooth" });
           });
         });
@@ -851,13 +1061,10 @@
           if (data.logged_in) {
             document.getElementById("loginBtn").style.display = "none";
             document.getElementById("signupBtn").style.display = "none";
+            document.getElementById("userMenuWrap").style.display = "block";
+
             let name = data.name.split(" ")[0];
-            document.getElementById("userWelcome").innerText =
-              "Welcome, " + name;
-
-            document.getElementById("logoutBtn").style.display = "inline-block";
-
-            document.getElementById("ordersBtn").style.display = "inline-block";
+            document.getElementById("userWelcome").innerText = "Hi, " + name;
           }
         });
     </script>
