@@ -24,7 +24,7 @@ $_SESSION['user_id'] = $user_id;
 
 /* Go directly to checkout */
 
-header("Location: ../checkout.php");
+header("Location: ../index.html");
 exit();
 
 }

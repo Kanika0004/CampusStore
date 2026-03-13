@@ -1,0 +1,70 @@
+<h2 class="mb-4 fw-bold">Products</h2>
+
+<!-- ADD PRODUCT BUTTON -->
+
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+Add Product
+</button>
+
+
+<!-- PRODUCTS TABLE -->
+
+<table class="table table-striped">
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Image</th>
+<th>Name</th>
+<th>Category</th>
+<th>Price</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="productTable"></tbody>
+
+</table>
+
+
+<!-- ADD PRODUCT MODAL -->
+
+<div class="modal fade" id="addProductModal">
+
+<div class="modal-dialog">
+
+<div class="modal-content">
+
+<div class="modal-header">
+<h5>Add Product</h5>
+</div>
+
+<div class="modal-body">
+
+<input id="name" class="form-control mb-2" placeholder="Product Name">
+
+<input id="price" class="form-control mb-2" placeholder="Price">
+
+<input id="image" class="form-control mb-2" placeholder="Image name (mouse.jpg)">
+
+<input id="category" class="form-control mb-2" placeholder="Category">
+
+<input id="subcategory" class="form-control mb-2" placeholder="Subcategory">
+
+</div>
+
+<div class="modal-footer">
+
+<button class="btn btn-primary" onclick="addProduct()">Save</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+

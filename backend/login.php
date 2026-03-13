@@ -7,6 +7,22 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $redirect = $_POST['redirect'] ?? "";
 
+/* ADMIN LOGIN (hardcoded) */
+
+/*$admin_email = "admin@gmail.com";
+$admin_password = "12345";
+
+if($email === $admin_email && $password === $admin_password){
+
+$_SESSION["admin"] = true;
+
+header("Location: ../admin/dashboard.html");
+exit();
+
+}*/
+
+/* NORMAL USER LOGIN */
+
 $sql = "SELECT * FROM users WHERE email='$email'";
 $result = $conn->query($sql);
 
