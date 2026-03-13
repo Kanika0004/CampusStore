@@ -425,13 +425,6 @@ html+=`
 <td>${c.email}</td>
 
 <td>
-<button class="btn btn-primary btn-sm"
-onclick="viewCustomerOrders(${c.id})">
-View Orders
-</button>
-</td>
-
-<td>
 <button class="btn btn-danger btn-sm"
 onclick="deleteCustomer(${c.id})">
 Delete
@@ -476,111 +469,10 @@ body:"id="+id
 if(data.status==="success"){
 
 alert("Customer deleted")
+
 loadCustomers()
 
-}else{
-
-alert(data.message || "Delete failed")
-
 }
-
-})
-
-}
-
-
-
-// VIeW CUST ORDERS
-
-function viewCustomerOrders(userId){
-
-fetch(`/CampusStore/admin/backend/get_customer_orders.php?user_id=${userId}`)
-
-.then(res=>res.json())
-
-.then(data=>{
-
-let html=""
-
-if(data.length===0){
-
-html="<p>No orders found</p>"
-
-}else{
-
-data.forEach(o=>{
-
-html+=`
-
-<p>
-<strong>Order ID:</strong> ${o.id}<br>
-<strong>Total:</strong> ₹${o.total}<br>
-<strong>Status:</strong> ${o.status}
-</p>
-
-<hr>
-
-`
-
-})
-
-}
-
-document.getElementById("ordersContent").innerHTML=html
-
-new bootstrap.Modal(document.getElementById("ordersModal")).show()
-
-})
-
-}
-
-
-/* LOAD ENQUIRIES */
-
-function loadEnquiries(){
-
-fetch("/CampusStore/admin/backend/get_enquiries.php")
-
-.then(res=>res.json())
-
-.then(data=>{
-
-let html=""
-
-data.forEach(e=>{
-
-html+=`
-
-<tr>
-
-<td>${e.id}</td>
-<td>${e.name}</td>
-<td>${e.email}</td>
-<td>${e.message}</td>
-<td>${e.admin_reply ?? "-"}</td>
-<td>${e.status}</td>
-
-<td>
-
-<button class="btn btn-success btn-sm"
-onclick="replyEnquiry(${e.id})">
-Reply
-</button>
-
-<button class="btn btn-danger btn-sm"
-onclick="deleteEnquiry(${e.id})">
-Delete
-</button>
-
-</td>
-
-</tr>
-
-`
-
-})
-
-document.getElementById("enquiryTable").innerHTML = html
 
 })
 

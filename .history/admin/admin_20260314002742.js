@@ -490,49 +490,7 @@ alert(data.message || "Delete failed")
 
 
 
-// VIeW CUST ORDERS
 
-function viewCustomerOrders(userId){
-
-fetch(`/CampusStore/admin/backend/get_customer_orders.php?user_id=${userId}`)
-
-.then(res=>res.json())
-
-.then(data=>{
-
-let html=""
-
-if(data.length===0){
-
-html="<p>No orders found</p>"
-
-}else{
-
-data.forEach(o=>{
-
-html+=`
-
-<p>
-<strong>Order ID:</strong> ${o.id}<br>
-<strong>Total:</strong> ₹${o.total}<br>
-<strong>Status:</strong> ${o.status}
-</p>
-
-<hr>
-
-`
-
-})
-
-}
-
-document.getElementById("ordersContent").innerHTML=html
-
-new bootstrap.Modal(document.getElementById("ordersModal")).show()
-
-})
-
-}
 
 
 /* LOAD ENQUIRIES */

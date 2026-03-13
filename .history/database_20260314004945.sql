@@ -1,3 +1,4 @@
+-- phpMyAdmin SQL Dump
 -- CampusStore Final Database
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -8,36 +9,52 @@ CREATE DATABASE IF NOT EXISTS `campusstore`;
 USE `campusstore`;
 
 -- --------------------------------------------------------
--- ADMIN TABLE
+-- Table structure for table `addresses`
 -- --------------------------------------------------------
 
-CREATE TABLE `admin` (
+CREATE TABLE `addresses` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
+  `address` text DEFAULT NULL,
+  `landmark` varchar(100) DEFAULT NULL,
+  `country` varchar(50) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `zip` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `admin` (`id`,`name`,`email`,`password`) VALUES
-(1,'Admin','admin@campusstore.com','admin123');
-
 -- --------------------------------------------------------
--- USERS TABLE (CUSTOMERS ONLY)
+-- Table structure for table `cart`
 -- --------------------------------------------------------
 
-CREATE TABLE `users` (
+CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `quantity`) VALUES
+(1,1,1,1);
+
+-- --------------------------------------------------------
+-- Table structure for table `orders`
+-- --------------------------------------------------------
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `total` decimal(10,2) DEFAULT NULL,
+  `payment_method` varchar(50) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `status` varchar(50) DEFAULT 'Pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `users` (`id`,`name`,`email`,`password`,`created_at`) VALUES
-(1,'kanika','k@gmail.com','k123',CURRENT_TIMESTAMP);
-
 -- --------------------------------------------------------
--- PRODUCTS
+-- Table structure for table `products`
 -- --------------------------------------------------------
 
 CREATE TABLE `products` (
@@ -74,52 +91,24 @@ INSERT INTO `products` (`id`,`name`,`price`,`image`,`category`,`subcategory`,`po
 (21,'Document File',99,'file.jpg','Stationery','Files',0);
 
 -- --------------------------------------------------------
--- ADDRESSES
+-- Table structure for table `users`
 -- --------------------------------------------------------
 
-CREATE TABLE `addresses` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `address` text DEFAULT NULL,
-  `landmark` varchar(100) DEFAULT NULL,
-  `country` varchar(50) DEFAULT NULL,
-  `state` varchar(50) DEFAULT NULL,
-  `zip` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
--- CART
--- --------------------------------------------------------
-
-CREATE TABLE `cart` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `cart` (`id`,`user_id`,`product_id`,`quantity`) VALUES
-(1,1,1,1);
-
--- --------------------------------------------------------
--- ORDERS
--- --------------------------------------------------------
-
-CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `total` decimal(10,2) DEFAULT NULL,
-  `payment_method` varchar(50) DEFAULT NULL,
-  `address` text DEFAULT NULL,
-  `status` varchar(50) DEFAULT 'Pending',
+  `password` varchar(255) DEFAULT NULL,
+  `role` varchar(20) DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `users` (`id`,`name`,`email`,`password`,`role`,`created_at`) VALUES
+(1,'kanika','k@gmail.com','k123','user',CURRENT_TIMESTAMP),
+(2,'Admin','admin@campusstore.com','admin123','admin',CURRENT_TIMESTAMP);
+
 -- --------------------------------------------------------
--- WISHLIST
+-- Table structure for table `wishlist`
 -- --------------------------------------------------------
 
 CREATE TABLE `wishlist` (
@@ -129,7 +118,7 @@ CREATE TABLE `wishlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
--- ENQUIRIES
+-- Table structure for table `enquiries`
 -- --------------------------------------------------------
 
 CREATE TABLE `enquiries` (
@@ -143,18 +132,8 @@ CREATE TABLE `enquiries` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
--- INDEXES
+-- Indexes
 -- --------------------------------------------------------
-
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
-
-ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`);
@@ -164,6 +143,13 @@ ALTER TABLE `cart`
 
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 ALTER TABLE `wishlist`
   ADD PRIMARY KEY (`id`);
@@ -175,15 +161,6 @@ ALTER TABLE `enquiries`
 -- AUTO_INCREMENT
 -- --------------------------------------------------------
 
-ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
-ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
 ALTER TABLE `addresses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
@@ -192,6 +169,12 @@ ALTER TABLE `cart`
 
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 ALTER TABLE `wishlist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

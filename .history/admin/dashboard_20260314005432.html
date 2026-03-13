@@ -162,12 +162,6 @@ font-size:16px;
 ⚙ Settings
 </a>
 
-<hr>
-
-<a href="logout.php" class="text-danger">
-🚪 Logout
-</a>
-
 </div>
 
 
@@ -345,38 +339,23 @@ backgroundColor:[
 
 })
 
-function loadPage(page, el){
-
-// highlight active menu
-document.querySelectorAll(".sidebar a").forEach(a=>{
-a.classList.remove("active")
-})
-
-if(el){
-el.classList.add("active")
-}
+function loadPage(page){
 
 fetch(page)
+
 .then(res=>res.text())
+
 .then(data=>{
 
 document.getElementById("main-content").innerHTML = data
 
-// load page scripts
+// run products loader if products page is opened
 if(page === "products.html"){
-setTimeout(loadProducts,100)
+setTimeout(loadProducts, 100)
 }
 
 if(page === "orders.html"){
-setTimeout(loadOrders,100)
-}
-
-if(page === "customers.html"){
-setTimeout(loadCustomers,100)
-}
-
-if(page === "enquiries.html"){
-setTimeout(loadEnquiries,100)
+setTimeout(loadOrders, 100)
 }
 
 })

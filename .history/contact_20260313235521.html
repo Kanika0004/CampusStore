@@ -1,0 +1,41 @@
+<h2>Contact Support</h2>
+
+<input id="name" placeholder="Your Name"><br><br>
+<input id="email" placeholder="Your Email"><br><br>
+
+<textarea id="message" placeholder="Your message"></textarea><br><br>
+
+<button onclick="sendEnquiry()">Send Message</button>
+
+<script>
+
+function sendEnquiry(){
+
+let name=document.getElementById("name").value
+let email=document.getElementById("email").value
+let message=document.getElementById("message").value
+
+fetch("backend/send_enquiry.php",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+
+body:`name=${name}&email=${email}&message=${message}`
+
+})
+
+.then(res=>res.json())
+.then(data=>{
+
+if(data.status==="success"){
+alert("Message sent!")
+}
+
+})
+
+}
+
+</script>

@@ -1,0 +1,1 @@
+http://localhost/CampusStore/admin/settings.html
