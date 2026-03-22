@@ -1,0 +1,119 @@
+
+<h2 class="fw-bold mb-4">Admin Settings</h2>
+
+<!-- SUCCESS MESSAGE -->
+<div id="successMsg" class="alert alert-success d-none"></div>
+
+<!-- ADMIN PROFILE -->
+<div class="card shadow-sm p-4 mb-4">
+
+<h5 class="mb-3">Admin Profile</h5>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label>Name</label>
+<input id="adminName" class="form-control">
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Email</label>
+<input id="adminEmail" class="form-control">
+</div>
+
+</div>
+
+<div class="text-center mt-3">
+<button class="btn btn-primary px-4"  onclick="updateProfile()">
+Update Profile
+</button>
+</div>
+
+</div>
+
+<!-- WEBSITE SETTINGS -->
+<div class="card shadow-sm p-4 mb-4">
+
+<h5 class="mb-3">Website Settings</h5>
+
+<div class="mb-3">
+<label>Website Name</label>
+<input id="siteName" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Support Email</label>
+<input id="supportEmail" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Contact Phone</label>
+<input id="contactPhone" class="form-control">
+</div>
+
+<div class="text-center mt-3">
+<button class="btn btn-primary px-4" onclick="saveWebsiteSettings()">
+Save Website Settings
+</button>
+</div>
+
+</div>
+
+<!-- PAYMENT SETTINGS -->
+<div class="card shadow-sm p-4 mb-4">
+
+<h5 class="mb-3">Payment Settings</h5>
+
+<div class="mb-3">
+<label>Enable Cash on Delivery</label>
+<select id="cod" class="form-control">
+<option value="Enabled">Enabled</option>
+<option value="Disabled">Disabled</option>
+</select>
+</div>
+
+<div class="mb-3">
+<label>UPI ID</label>
+<input id="upi" class="form-control" placeholder="campusstore@upi">
+</div>
+
+<div class="mb-3">
+<label>Payment Gateway</label>
+<select id="gateway" class="form-control">
+<option>Razorpay</option>
+<option>Stripe</option>
+<option>PayPal</option>
+</select>
+</div>
+
+<div class="text-center mt-3"> 
+<button class="btn btn-primary px-4" onclick="savePaymentSettings()">
+Save Payment Settings
+</button></div>
+
+
+</div>
+
+<!-- SECURITY -->
+<div class="card shadow-sm p-4 mb-4">
+
+<h5 class="mb-3">Security</h5>
+
+<div class="mb-3">
+<label>Change Password</label>
+<input type="password" id="newPassword" class="form-control mb-2" placeholder="New Password">
+<input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password"></div>
+
+<div class="text-center mt-3">
+<button class="btn btn-danger px-4" onclick="changePassword()">
+Change Password
+</button>
+</div>
+
+</div>
+
+
+
+<!-- IMPORTANT: LOAD MAIN JS -->
+<script src="/CampusStore/admin/admin.js"></script>
+

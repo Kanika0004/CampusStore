@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Customer Enquiries</title>
+
+<link rel="stylesheet" href="css/styles.css">
+<!-- 
+<style>
+
+
+
+body{
+font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+background:#f8f9fa;
+padding:30px;
+}
+
+h2{
+font-weight:700;
+margin-bottom:20px;
+}
+
+table{
+width:100%;
+background:white;
+border-radius:8px;
+overflow:hidden;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+th{
+background:#198754;
+color:white;
+font-weight:600;
+}
+
+th,td{
+padding:12px 14px;
+text-align:left;
+}
+
+tr:nth-child(even){
+background:#f5f7fa;
+}
+
+button{
+border:none;
+padding:6px 12px;
+border-radius:6px;
+font-size:14px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+</style> -->
+
+</head>
+
+<body>
+
+<div class="container-padding">
+    <h2 class="mb-4 fw-bold">Customer Enquiries</h2>
+
+    <table class="table table-striped">
+
+    <thead>
+    <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Message</th>
+    <th>Admin Reply</th>
+    <th>Status</th>
+    <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody id="enquiryTable"></tbody>
+
+    </table>
+
+    <script src="admin.js"></script>
+
+    <script>
+    loadEnquiries()
+    </script>
+</div>
+
+</body>
+</html>

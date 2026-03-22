@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Admin Dashboard</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+
+body {
+background: #f8fafc;
+}
+
+.sidebar{
+background: #ffffff;
+border-right: 1px solid #e5e7eb;
+min-height: 100vh;
+padding-top: 20px;
+}
+
+.sidebar h3{
+color:#0d6efd;
+font-weight:600;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:#374151;
+text-decoration:none;
+font-size:16px;
+border-radius:6px;
+margin:4px 10px;
+}
+
+.sidebar a:hover{
+background:#eef2ff;
+color:#0d6efd;
+}
+
+.sidebar a.active{
+background:#e7f1ff;
+color:#0d6efd;
+font-weight:600;
+}
+
+.content{
+padding:30px;
+}
+
+.card {
+border: none;
+border-radius: 12px;
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+transform: translateY(-4px);
+box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+canvas {
+max-height: 300px;
+}
+
+table {
+background: white;
+border-radius: 8px;
+overflow: hidden;
+}
+
+.admin-navbar{
+background:white;
+padding:18px 0;
+border-bottom:1px solid #e5e7eb;
+box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+
+.logo{
+font-size:24px;
+font-weight:700;
+color:#0d6efd;
+margin:0;
+}
+
+.admin-profile{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:16px;
+}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+<nav class="admin-navbar">
+
+<div class="container d-flex justify-content-between align-items-center">
+
+<h3 class="logo">CampusStore</h3>
+
+<div class="admin-profile">
+<span class="text-muted fw-bold">Admin</span>
+<i class="bi bi-person-circle fs-4"></i>
+</div>
+
+</div>
+
+</nav>
+
+<!-- SIDEBAR -->
+
+<div class="col-md-2 sidebar">
+
+<h5 class="text-center mb-4 fw-bold">Admin Panel</h5>
+
+
+<a href="dashboard.html" class="active">
+📊 Dashboard
+</a>
+
+<a href="#" onclick="loadPage('products.html', this)">
+📦 Products
+</a>
+
+<a href="#" onclick="loadPage('orders.html', this)">
+🧾 Orders
+</a>
+
+<a href="#" onclick="loadPage('customers.html', this)">
+👥 Customers
+</a>
+
+<a href="#" onclick="loadPage('enquiries.html', this)">
+💬 Enquiries
+</a>
+
+<a href="#" onclick="loadPage('settings.html', this)">
+⚙ Settings
+</a>
+
+<hr>
+
+<a href="logout.php" class="text-danger">
+🚪 Logout
+</a>
+
+</div>
+
+
+
+<!-- MAIN CONTENT -->
+
+<div class="col-md-10 p-4" id="main-content">
+
+<h2 class="mb-4 fw-bold">Dashboard</h2>
+
+<!-- STATS CARDS -->
+
+<div class="row g-4 mb-4">
+
+<div class="col-md-3">
+<div class="card shadow-sm">
+<div class="card-body">
+<h6>Total Products</h6>
+<h3 id="products">0</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm">
+<div class="card-body">
+<h6>Total Orders</h6>
+<h3 id="orders">0</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm">
+<div class="card-body">
+<h6>Total Users</h6>
+<h3 id="users">0</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm">
+<div class="card-body">
+<h6>Total Revenue</h6>
+<h3 id="revenue">₹0</h3>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Revenue Chart -->
+
+<div class="card shadow-sm p-4 mb-4">
+
+<h5 class="mb-3 fw-bold" >Revenue Trend</h5>
+
+<canvas id="salesChart"></canvas>
+
+</div>
+
+
+<!-- Category Chart -->
+
+<div class="card shadow-sm p-4 mb-4">
+
+<h5 class="mb-3 fw-bold">Products by Category</h5>
+
+<canvas id="categoryChart"></canvas>
+
+</div>
+
+
+
+<!-- RECENT ORDERS -->
+
+<div class="card shadow-sm">
+
+<div class="card-body">
+
+<h5 class="fw-bold">Recent Orders</h5>
+
+<table class="table">
+
+<thead>
+
+<tr>
+<th>Order ID</th>
+<th>Customer</th>
+<th>Total</th>
+<th>Date</th>
+</tr>
+
+</thead>
+
+<tbody id="recentOrders"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="admin.js"></script>
+<script>
+
+fetch("backend/get_dashboard_stats.php")
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("products").innerText=data.products
+document.getElementById("orders").innerText=data.orders
+document.getElementById("users").innerText=data.users
+document.getElementById("revenue").innerText="₹"+data.revenue
+
+
+let html=""
+
+data.recent_orders.forEach(o=>{
+
+html+=`
+<tr>
+<td>${o.id}</td>
+<td>${o.name}</td>
+<td>₹${o.total}</td>
+<td>${o.created_at}</td>
+</tr>
+`
+
+})
+
+document.getElementById("recentOrders").innerHTML=html
+
+// Revenue Chart
+const ctx=document.getElementById("salesChart").getContext("2d");
+
+new Chart(ctx,{
+type:"line",
+data:{
+labels:["Today"],
+datasets:[{
+label:"Revenue",
+data:[data.revenue],
+borderColor:"#0d6efd",
+backgroundColor:"rgba(13,110,253,0.1)",
+fill:true,
+tension:0.4
+}]
+}
+})
+
+const categoryCtx = document.getElementById("categoryChart").getContext("2d");
+
+new Chart(categoryCtx,{
+type:"doughnut",
+data:{
+labels:["Electronics","Clothing","Accessories","Stationery"],
+datasets:[{
+data:[8,6,7,4],
+backgroundColor:[
+"#0d6efd",
+"#198754",
+"#ffc107",
+"#dc3545"
+]
+}]
+}
+})
+
+})
+
+
+
+
+function loadPage(page, el){
+
+// highlight active menu
+document.querySelectorAll(".sidebar a").forEach(a=>{
+a.classList.remove("active")
+})
+
+if(el){
+el.classList.add("active")
+}
+
+fetch(page)
+.then(res=>res.text())
+.then(data=>{
+
+document.getElementById("main-content").innerHTML = data
+
+// load page scripts
+if(page === "products.html"){
+setTimeout(loadProducts,100)
+}
+
+if(page === "orders.html"){
+setTimeout(loadOrders,100)
+}
+
+if(page === "customers.html"){
+setTimeout(loadCustomers,100)
+}
+
+if(page === "enquiries.html"){
+setTimeout(loadEnquiries,100)
+}
+
+if(page === "settings.html"){
+setTimeout(()=>{
+    loadAdminProfile()
+    setTimeout(()=>{
+        loadWebsiteSettings()
+        loadPaymentSettings()
+    },150)
+
+},100)
+}
+
+})
+}
+</script>
+
+<!-- Reply Modal -->
+<div class="modal fade" id="replyModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Reply to Enquiry</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <textarea id="replyText" class="form-control" rows="4" placeholder="Type your reply..."></textarea>
+        <input type="hidden" id="replyId">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="sendReply()">Send Reply</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        Are you sure you want to delete this enquiry?
+        <input type="hidden" id="deleteId">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

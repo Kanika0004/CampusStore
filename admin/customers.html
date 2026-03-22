@@ -1,0 +1,41 @@
+<h2 class="mb-4 fw-bold">Customers</h2>
+
+<div class="card p-4 shadow-sm">
+
+<table class="table">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Orders</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="customerTable"></tbody>
+
+</table>
+
+</div>
+
+<!-- MODAL (THIS IS OK HERE) -->
+<div class="modal fade" id="ordersModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5>Customer Orders</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body" id="ordersContent"></div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+loadCustomers()
+</script>

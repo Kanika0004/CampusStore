@@ -1,0 +1,1088 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      .product-card {
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+      }
+      .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+      .best-seller-wrapper {
+        overflow: hidden;
+        position: relative;
+      }
+
+      .best-seller-track {
+        display: flex;
+        gap: 20px;
+        animation: scrollProducts 40s linear infinite;
+      }
+
+      .best-seller-track:hover {
+        animation-play-state: paused;
+      }
+
+      @keyframes scrollProducts {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .qty-box {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .qty-value {
+        min-width: 28px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .best-seller-track .product-card {
+        min-width: 260px;
+        max-width: 260px;
+        flex: 0 0 auto;
+      }
+      .header-actions {
+        min-width: 260px;
+      }
+
+      @media (max-width: 768px) {
+        .header-actions {
+          margin-top: 12px;
+          width: 100%;
+          justify-content: flex-end;
+          flex-wrap: wrap;
+          gap: 8px !important;
+        }
+      }
+      .wishlist-btn {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      }
+
+      .wishlist-btn i {
+        font-size: 14px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .wishlist-btn.active i {
+        color: #dc3545;
+      }
+    </style>
+    <meta charset="UTF-8" />
+
+    <title>Bootstrap Setup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header
+        class="d-flex align-items-center justify-content-between py-3 mb-4 border-bottom"
+      >
+        <!-- Logo -->
+        <div class="col-md-2">
+          <a href="index.html" class="text-decoration-none">
+            <span class="fs-4 fw-bold text-primary">CampusStore</span>
+          </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="col-md-5">
+          <form class="d-flex" id="searchForm">
+            <input
+              type="search"
+              id="searchInput"
+              class="form-control me-2"
+              placeholder="Search for books, gadgets, stationery..."
+            />
+            <button class="btn btn-primary" type="submit">Search</button>
+          </form>
+        </div>
+
+        <!-- Right Section -->
+        <div
+          class="col-md-3 text-end d-flex justify-content-end align-items-center gap-2 flex-nowrap header-actions"
+        >
+          <a
+            href="login.html"
+            id="loginBtn"
+            class="btn btn-outline-primary btn-sm"
+          >
+            Login
+          </a>
+
+          <a
+            href="signup.html"
+            id="signupBtn"
+            class="btn btn-primary btn-sm text-nowrap"
+          >
+            Sign Up
+          </a>
+
+          <div id="userMenuWrap" class="dropdown" style="display: none">
+            <button
+              class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="width: 38px; height: 38px"
+            >
+              <i class="bi bi-person-fill"></i>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <span
+                  class="dropdown-item-text fw-semibold"
+                  id="userWelcome"
+                ></span>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="order_history.php">
+                  <i class="bi bi-box me-2"></i>My Orders
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="wishlist.html">
+                  <i class="bi bi-heart me-2"></i>Wishlist
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="backend/logout.php">
+                  <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <a
+            href="wishlist.html"
+            class="btn btn-outline-danger position-relative"
+          >
+            <i class="bi bi-heart"></i>
+          </a>
+
+          <a
+            href="checkout.php"
+            class="btn btn-outline-primary position-relative"
+          >
+            <i class="bi bi-cart"></i>
+            <span
+              id="cartCount"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+            >
+              0
+            </span>
+          </a>
+        </div>
+      </header>
+    </div>
+    <!-- Navigation Bar -->
+    <nav
+      class="navbar navbar-expand-lg bg-body-tertiary rounded"
+      aria-label="Twelfth navbar example"
+    >
+      <div class="container-fluid">
+        <!-- Toggle Button (Mobile) -->
+        <button
+          class="navbar-toggler collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarsExample10"
+          aria-controls="navbarsExample10"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Content -->
+        <div
+          class="collapse navbar-collapse justify-content-md-center"
+          id="navbarsExample10"
+        >
+          <ul class="navbar-nav">
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Shop by Category
+              </a>
+
+              <ul class="dropdown-menu category-dropdown p-3">
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="All"
+                    data-subcategory="All"
+                    >All Products</a
+                  >
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+                <li><h6 class="dropdown-header fw-bold">Electronics</h6></li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Electronics"
+                    data-subcategory="Computer Accessories"
+                    >Computer Accessories</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Electronics"
+                    data-subcategory="Tablet Accessories"
+                    >Tablet Accessories</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Electronics"
+                    data-subcategory="Audio"
+                    >Audio</a
+                  >
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+                <li><h6 class="dropdown-header fw-bold">Clothing</h6></li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Clothing"
+                    data-subcategory="Hoodies"
+                    >Hoodies</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Clothing"
+                    data-subcategory="T-Shirts"
+                    >T-Shirts</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Clothing"
+                    data-subcategory="Shoes"
+                    >Shoes</a
+                  >
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+                <li><h6 class="dropdown-header fw-bold">Accessories</h6></li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Accessories"
+                    data-subcategory="Bags"
+                    >Bags</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Accessories"
+                    data-subcategory="Watches"
+                    >Watches</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Accessories"
+                    data-subcategory="Water Bottles"
+                    >Water Bottles</a
+                  >
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+                <li><h6 class="dropdown-header fw-bold">Stationery</h6></li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Stationery"
+                    data-subcategory="Notebooks"
+                    >Notebooks</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Stationery"
+                    data-subcategory="Pens"
+                    >Pens</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Stationery"
+                    data-subcategory="Files"
+                    >Files</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item filter-link"
+                    href="#"
+                    data-category="Stationery"
+                    data-subcategory="Calculators"
+                    >Calculators</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link filter-link"
+                href="#"
+                data-category="Electronics"
+                data-subcategory="All"
+                >Electronics</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link filter-link"
+                href="#"
+                data-category="Accessories"
+                data-subcategory="All"
+                >Accessories</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link filter-link"
+                href="#"
+                data-category="Clothing"
+                data-subcategory="All"
+                >Clothing</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link filter-link"
+                href="#"
+                data-category="Stationery"
+                data-subcategory="All"
+                >Stationery</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="homeSections">
+      <!-- Hero Container -->
+      <div class="container col-xxl-8 px-4 py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+          <div class="col-10 col-sm-8 col-lg-6">
+            <img
+              src="./public/theme.png"
+              class="d-block mx-lg-auto img-fluid"
+              alt="Bootstrap Themes"
+              width="700"
+              height="500"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="col-lg-6">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+              Everything You Need for Campus Life
+            </h1>
+
+            <p class="lead">
+              Shop the latest electronics, trending fashion, and essential
+              college must-haves — curated for your everyday lifestyle.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= BEST SELLERS SECTION ================= -->
+      <div class="container py-5">
+        <h2 class="fw-bold mb-4">🔥 Best Sellers</h2>
+
+        <div class="best-seller-wrapper">
+          <div class="best-seller-track" id="bestSellerItems"></div>
+        </div>
+      </div>
+
+      <!-- Top Offers Section -->
+      <div class="container my-5">
+        <h2 class="mb-4 fw-bold">Top Offers</h2>
+
+        <div class="row g-4">
+          <!-- Deals of the Week -->
+          <div class="col-md-2">
+            <div class="card h-100 shadow-sm product-card">
+              <div class="card-body p-0">
+                <div class="bg-danger text-white p-4 rounded-top">
+                  <h5 class="card-title mb-0">Deals of the Week</h5>
+                </div>
+
+                <div class="p-3">
+                  <a
+                    href="#"
+                    class="card-link text-decoration-none fw-semibold"
+                  >
+                    View offers →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Big Pack Bigger Discounts -->
+          <div class="col-md-2">
+            <div class="card h-100 shadow-sm product-card">
+              <div class="card-body p-0">
+                <div class="bg-danger text-white p-4 rounded-top">
+                  <h5 class="card-title mb-0">Big Pack Bigger Discounts</h5>
+                </div>
+
+                <div class="p-3">
+                  <a
+                    href="#"
+                    class="card-link text-decoration-none fw-semibold"
+                  >
+                    View offers →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combos -->
+          <div class="col-md-2">
+            <div class="card h-100 shadow-sm product-card">
+              <div class="card-body p-0">
+                <div class="bg-danger text-white p-4 rounded-top">
+                  <h5 class="card-title mb-0">Combos You Can't Miss</h5>
+                </div>
+
+                <div class="p-3">
+                  <a
+                    href="#"
+                    class="card-link text-decoration-none fw-semibold"
+                  >
+                    View offers →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ₹99 Corner -->
+          <div class="col-md-2">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body p-0">
+                <div class="bg-danger text-white p-4 rounded-top">
+                  <h5 class="card-title mb-0">The ₹99 Corner</h5>
+                </div>
+
+                <div class="p-3">
+                  <a
+                    href="#"
+                    class="card-link text-decoration-none fw-semibold"
+                  >
+                    View offers →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container py-5" id="productsPage" style="display: none">
+      <!-- Breadcrumb -->
+      <nav class="mb-2">
+        <span id="breadcrumb" class="text-muted"></span>
+      </nav>
+
+      <!-- Category Title -->
+      <h2 class="fw-bold mb-4" id="categoryTitle"></h2>
+
+      <!-- Products -->
+      <div class="row g-4" id="productsContainer"></div>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <div class="container">
+      <footer class="row py-5 my-5 border-top">
+        <!-- LEFT: Logo + Social -->
+        <div class="col-md-4 mb-4">
+          <!-- Logo -->
+          <h4 class="fw-bold text-primary">CampusStore</h4>
+          <p class="text-muted small">
+            Your one-stop shop for all campus essentials.
+          </p>
+
+          <!-- Social Icons -->
+          <div class="d-flex gap-3 fs-5">
+            <a href="#" class="text-body-secondary">
+              <i class="bi bi-facebook"></i>
+            </a>
+
+            <a href="#" class="text-body-secondary">
+              <i class="bi bi-instagram"></i>
+            </a>
+
+            <a href="#" class="text-body-secondary">
+              <i class="bi bi-twitter-x"></i>
+            </a>
+
+            <a href="#" class="text-body-secondary">
+              <i class="bi bi-pinterest"></i>
+            </a>
+          </div>
+
+          <p class="text-muted small mt-3">© 2025 CampusStore</p>
+        </div>
+
+        <!-- RIGHT: Sections -->
+        <div class="col-md-2 mb-3">
+          <h6 class="fw-bold">Shop</h6>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+              <a href="#" class="nav-link p-0 text-muted">Electronics</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="#" class="nav-link p-0 text-muted">Clothing</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="#" class="nav-link p-0 text-muted">Stationery</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-2 mb-3">
+          <h6 class="fw-bold">Account</h6>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+              <a href="login.html" class="nav-link p-0 text-muted">Login</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="login.html" class="nav-link p-0 text-muted">Sign Up</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="order_history.php" class="nav-link p-0 text-muted"
+                >Orders</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-2 mb-3">
+          <h6 class="fw-bold">Support</h6>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+              <a href="#" class="nav-link p-0 text-muted">Help Center</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="contact.html" class="nav-link p-0 text-muted">Contact</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="#" class="nav-link p-0 text-muted">FAQs</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-2 mb-3">
+          <h6 class="fw-bold">Company</h6>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+              <a href="#" class="nav-link p-0 text-muted">About</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="#" class="nav-link p-0 text-muted">Careers</a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="#" class="nav-link p-0 text-muted">Privacy</a>
+            </li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/cart.js"></script>
+
+    <script>
+      let selectedCategory = "All";
+      let selectedSubcategory = "All";
+      let wishlistIds = [];
+
+      function updateCartCount() {
+        fetch("backend/get_cart.php")
+          .then((res) => res.json())
+          .then((data) => {
+            let count = 0;
+
+            if (Array.isArray(data) && data.length > 0) {
+              data.forEach((item) => {
+                count += parseInt(item.quantity) || 0;
+              });
+
+              // Sync local storage with DB cart
+              localStorage.setItem("cartCount", count);
+            } else {
+              // fallback when user not logged in
+              count = parseInt(localStorage.getItem("cartCount")) || 0;
+            }
+
+            const badge = document.getElementById("cartCount");
+            if (badge) {
+              badge.innerText = count;
+            }
+          })
+          .catch(() => {
+            const badge = document.getElementById("cartCount");
+            if (badge) {
+              badge.innerText =
+                parseInt(localStorage.getItem("cartCount")) || 0;
+            }
+          });
+      }
+
+      function attachCartEvents() {
+        document.querySelectorAll(".qty-minus").forEach((btn) => {
+          btn.onclick = function () {
+            const card = this.closest(".product-card");
+            const qtyEl = card.querySelector(".qty-value");
+
+            let qty = parseInt(qtyEl.innerText);
+
+            if (qty > 1) {
+              qty--;
+              qtyEl.innerText = qty;
+            }
+          };
+        });
+
+        document.querySelectorAll(".qty-plus").forEach((btn) => {
+          btn.onclick = function () {
+            const card = this.closest(".product-card");
+            const qtyEl = card.querySelector(".qty-value");
+
+            let qty = parseInt(qtyEl.innerText);
+
+            qty++;
+            qtyEl.innerText = qty;
+          };
+        });
+
+        document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
+          btn.onclick = function () {
+            const card = this.closest(".product-card");
+
+            const productId = this.dataset.id;
+
+            const qty = parseInt(card.querySelector(".qty-value").innerText);
+
+            fetch("backend/add_to_cart.php", {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+              },
+
+              body: JSON.stringify({
+                product_id: productId,
+                quantity: qty,
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.status === "success") {
+                  updateCartCount();
+                } else {
+                  // logged out fallback: update badge locally
+                  let current =
+                    parseInt(localStorage.getItem("cartCount")) || 0;
+                  localStorage.setItem("cartCount", current + qty);
+                  updateCartCount();
+                }
+
+                card.querySelector(".qty-value").innerText = 1;
+
+                let toast = new bootstrap.Toast(
+                  document.getElementById("cartToast"),
+                );
+                toast.show();
+              })
+              .catch(() => {
+                // network/login fallback
+                let current = parseInt(localStorage.getItem("cartCount")) || 0;
+                localStorage.setItem("cartCount", current + qty);
+                updateCartCount();
+
+                card.querySelector(".qty-value").innerText = 1;
+
+                let toast = new bootstrap.Toast(
+                  document.getElementById("cartToast"),
+                );
+                toast.show();
+              });
+          };
+        });
+
+        document.querySelectorAll(".wishlist-btn").forEach((btn) => {
+          btn.onclick = function () {
+            const productId = Number(this.dataset.id);
+            const icon = this.querySelector("i");
+
+            fetch("backend/add_to_wishlist.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                product_id: productId,
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.status === "added") {
+                  if (!wishlistIds.includes(productId)) {
+                    wishlistIds.push(productId);
+                  }
+                  this.classList.add("active");
+                  icon.classList.remove("bi-heart");
+                  icon.classList.add("bi-heart-fill");
+                }
+
+                if (data.status === "removed") {
+                  wishlistIds = wishlistIds.filter((id) => id !== productId);
+                  this.classList.remove("active");
+                  icon.classList.remove("bi-heart-fill");
+                  icon.classList.add("bi-heart");
+                }
+
+                if (data.status === "error") {
+                  alert("Please login first to use wishlist.");
+                }
+              })
+              .catch((err) => console.error("Wishlist error:", err));
+          };
+        });
+      }
+
+      function loadWishlistIds() {
+        return fetch("backend/get_wishlist_ids.php")
+          .then((res) => res.json())
+          .then((data) => {
+            wishlistIds = Array.isArray(data) ? data.map(Number) : [];
+          })
+          .catch((err) => {
+            console.error("Wishlist ids error:", err);
+            wishlistIds = [];
+          });
+      }
+
+      function renderProductCard(product, compact = false) {
+        const isWishlisted = wishlistIds.includes(Number(product.id));
+
+        return `
+    <div class="${compact ? "" : "col-12 col-sm-6 col-lg-3"}">
+      <div class="card h-100 shadow-sm product-card">
+        <div class="ratio ratio-4x3 bg-light">
+          <img
+            src="./public/${product.image}"
+            class="w-100 h-100 object-fit-contain p-3"
+            alt="${product.name}"
+          />
+        </div>
+
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="card-title mb-1">${product.name}</h5>
+              ${product.category ? `<p class="text-muted small mb-1">${product.category}</p>` : ""}
+              ${product.subcategory ? `<p class="text-muted small mb-2">${product.subcategory}</p>` : ""}
+            </div>
+
+            <button
+              type="button"
+              class="wishlist-btn ${isWishlisted ? "active" : ""}"
+              data-id="${product.id}"
+            >
+              <i class="bi ${isWishlisted ? "bi-heart-fill" : "bi-heart"}"></i>
+            </button>
+          </div>
+
+          <div class="mb-3">
+            <span class="fw-bold fs-5">₹${product.price}</span>
+          </div>
+
+          <div class="mt-auto">
+            <div class="d-flex gap-2 align-items-center">
+              <button class="btn btn-primary flex-grow-1 add-to-cart-btn" data-id="${product.id}">
+                Add to Cart
+              </button>
+
+              <div class="qty-box">
+                <button type="button" class="btn btn-outline-secondary btn-sm qty-minus">−</button>
+                <span class="qty-value">1</span>
+                <button type="button" class="btn btn-outline-secondary btn-sm qty-plus">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+      }
+
+      function loadProducts(
+        search = "",
+        category = "All",
+        subcategory = "All",
+      ) {
+        Promise.all([
+          fetch(
+            `backend/get_products.php?search=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}`,
+          ).then((res) => res.json()),
+          loadWishlistIds(),
+        ])
+          .then(([products]) => {
+            const container = document.getElementById("productsContainer");
+            container.innerHTML = "";
+
+            if (!Array.isArray(products) || products.length === 0) {
+              container.innerHTML = `
+          <div class="col-12">
+            <p class="text-muted">No products found.</p>
+          </div>
+        `;
+              return;
+            }
+
+            products.forEach((product) => {
+              container.innerHTML += renderProductCard(product, false);
+            });
+
+            attachCartEvents();
+          })
+          .catch((err) => console.error("Load products error:", err));
+      }
+
+      function loadBestSellers() {
+        Promise.all([
+          fetch("backend/get_best_sellers.php").then((res) => res.json()),
+          loadWishlistIds(),
+        ])
+          .then(([products]) => {
+            const container = document.getElementById("bestSellerItems");
+            container.innerHTML = "";
+
+            let html = "";
+
+            products.forEach((product) => {
+              html += renderProductCard(product, true);
+            });
+
+            container.innerHTML = html + html;
+            attachCartEvents();
+          })
+          .catch((err) => console.error("Best sellers error:", err));
+      }
+
+      function showHomePage() {
+        document.getElementById("homeSections").style.display = "block";
+        document.getElementById("productsPage").style.display = "none";
+      }
+
+      function showProductsPage(title, breadcrumb) {
+        document.getElementById("homeSections").style.display = "none";
+        document.getElementById("productsPage").style.display = "block";
+        document.getElementById("categoryTitle").innerText = title;
+        document.getElementById("breadcrumb").innerText = breadcrumb;
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCartCount();
+
+        loadWishlistIds().then(() => {
+          loadBestSellers();
+          loadProducts();
+        });
+
+        document
+          .getElementById("searchForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const searchValue = document
+              .getElementById("searchInput")
+              .value.trim();
+
+            if (searchValue === "") {
+              if (selectedCategory === "All" && selectedSubcategory === "All") {
+                showHomePage();
+              } else {
+                let title = selectedCategory;
+                let breadcrumb = "Home > " + selectedCategory;
+
+                if (selectedSubcategory !== "All") {
+                  title += " → " + selectedSubcategory;
+                  breadcrumb += " > " + selectedSubcategory;
+                }
+
+                showProductsPage(title, breadcrumb);
+              }
+
+              loadProducts("", selectedCategory, selectedSubcategory);
+              return;
+            }
+
+            // reset category filters when searching
+            selectedCategory = "All";
+            selectedSubcategory = "All";
+
+            showProductsPage(
+              "Search Results",
+              `Home > Search > ${searchValue}`,
+            );
+
+            loadProducts(searchValue, "All", "All");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+
+        document.querySelectorAll(".filter-link").forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            document.getElementById("searchInput").value = "";
+
+            selectedCategory = this.dataset.category || "All";
+            selectedSubcategory = this.dataset.subcategory || "All";
+
+            const searchValue = document
+              .getElementById("searchInput")
+              .value.trim();
+
+            if (selectedCategory === "All") {
+              showHomePage();
+              loadProducts(searchValue, "All", "All");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              return;
+            }
+
+            let title = selectedCategory;
+            let breadcrumb = "Home > " + selectedCategory;
+
+            if (selectedSubcategory !== "All") {
+              title += " → " + selectedSubcategory;
+              breadcrumb += " > " + selectedSubcategory;
+            }
+
+            showProductsPage(title, breadcrumb);
+            loadProducts(searchValue, selectedCategory, selectedSubcategory);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        });
+      });
+    </script>
+    <script>
+      fetch("backend/get_user.php")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.logged_in) {
+            document.getElementById("loginBtn").style.display = "none";
+            document.getElementById("signupBtn").style.display = "none";
+            document.getElementById("userMenuWrap").style.display = "block";
+
+            let name = data.name.split(" ")[0];
+            document.getElementById("userWelcome").innerText = "Hi, " + name;
+          }
+        });
+    </script>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div
+        id="cartToast"
+        class="toast align-items-center text-bg-success border-0"
+      >
+        <div class="d-flex">
+          <div class="toast-body">Product added to cart!</div>
+
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
